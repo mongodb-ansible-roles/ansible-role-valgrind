@@ -33,9 +33,3 @@
     chdir: /tmp/valgrind-{{ valgrind_version }}
     target: install
   when: not valgrind_binary.stat.exists
-
-- name: Create symlink
-  file:
-    state: link
-    src: /usr/local/bin/valgrind
-    dest: /usr/bin/valgrind
