@@ -1,0 +1,7 @@
+---
+- name: Prepare
+  hosts: ubuntu1604
+  tasks:
+    - name: Install compiler
+      package:
+        name: build-essential

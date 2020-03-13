@@ -1,0 +1,41 @@
+---
+- name: Check if package is already downloaded
+  stat:
+    path: /tmp/valgrind-{{ valgrind_version }}
+  register: valgrind
+
+- name: Unarchive valgrind from {{ valgrind_package_url }}
+  unarchive:
+    dest: /tmp
+    remote_src: true
+    src: "{{ valgrind_package_url }}"
+  when: not valgrind.stat.exists
+
+- name: Check if valgrind is already compiled
+  stat:
+    path: /tmp/valgrind-{{ valgrind_version }}/coregrind/valgrind
+  register: valgrind_binary
+
+- name: Configure
+  command: ./configure
+  args:
+    chdir: /tmp/valgrind-{{ valgrind_version }}
+  when: not valgrind_binary.stat.exists
+
+- name: Make valgrind
+  make:
+    chdir: /tmp/valgrind-{{ valgrind_version }}
+  when: not valgrind_binary.stat.exists
+
+- name: Make install valgrind
+  become: true
+  make:
+    chdir: /tmp/valgrind-{{ valgrind_version }}
+    target: install
+  when: not valgrind_binary.stat.exists
+
+- name: Create symlink
+  file:
+    state: link
+    src: /usr/local/bin/valgrind
+    dest: /usr/bin/valgrind

@@ -1,0 +1,2 @@
+---
+valgrind_package_url: https://s3.amazonaws.com/boxes.10gen.com/build/valgrind/valgrind-{{ valgrind_version }}.tar.gz

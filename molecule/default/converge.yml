@@ -1,0 +1,8 @@
+---
+- become: true
+  name: Converge
+  hosts: all
+  roles:
+    - role: ansible-role-valgrind
+      vars:
+        valgrind_version: 3.15.0
